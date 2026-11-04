@@ -1,0 +1,78 @@
+// BARAM 26.3.0 meshing controls from the tested headless BaramMesh case.
+// https://github.com/nextfoam/baram/tree/1e68f04da6cd62e0cb89798b2a81f2fdc3fbdeb9
+// BARAM is by NEXTFOAM, GPL-3.0; see LICENSE.md for template origin and scope.
+// Boundary STL files, mesh sizes and seed are supplied by scripts/run_cfd.py.
+FoamFile {version 2.0; format ascii; class dictionary; object snappyHexMeshDict;}
+castellatedMesh true; snap true; addLayers false;
+geometry { @GEOMETRY@ }
+castellatedMeshControls {
+ maxLocalCells @MAX_CELLS@; maxGlobalCells @MAX_CELLS@;
+ minRefinementCells 0; maxLoadUnbalance 0.5; nCellsBetweenLevels 3;
+ features ( @FEATURES@ );
+ refinementSurfaces { @SURFACES@ }
+ resolveFeatureAngle 30;
+ refinementRegions { @REGIONS@ }
+ allowFreeStandingZoneFaces yes;
+ locationInMesh @LOCATION@;
+}
+snapControls
+{
+  nSmoothPatch 1;
+  nSmoothInternal 0;
+  tolerance 3;
+  nSolveIter 30;
+  nRelaxIter 5;
+  implicitFeatureSnap false;
+  explicitFeatureSnap true;
+  nFeatureSnapIter 15;
+  multiRegionFeatureSnap no;
+  concaveAngle 45;
+  minAreaRatio 0.3;
+}
+addLayersControls
+{
+  layers
+  {
+  }
+  nGrow 0;
+  featureAngle 60;
+  maxFaceThicknessRatio 0.5;
+  nSmoothSurfaceNormals 1;
+  nSmoothThickness 10;
+  minMedialAxisAngle 90;
+  maxThicknessToMedialRatio 0.3;
+  nSmoothNormals 3;
+  nRelaxIter 10;
+  nBufferCellsNoExtrude 1;
+  nLayerIter 50;
+  nRelaxedIter 20;
+  thicknessModel finalAndExpansion;
+  relativeSizes on;
+  finalLayerThickness 0.5;
+  expansionRatio 1.2;
+  minThickness 0.3;
+}
+meshQualityControls
+{
+  maxNonOrtho 65;
+  maxBoundarySkewness 20;
+  maxInternalSkewness 4;
+  maxConcave 80;
+  minVol 1e-20;
+  minTetQuality 1e-9;
+  minVolCollapseRatio -1;
+  minArea -1;
+  minTwist 0.02;
+  minDeterminant 0.001;
+  minFaceWeight 0.05;
+  minFaceFlatness -1;
+  minVolRatio 0.01;
+  minTriangleTwist -1;
+  relaxed
+  {
+    maxNonOrtho 75;
+  }
+  nSmoothScale 4;
+  errorReduction 0.75;
+}
+mergeTolerance 1e-06;

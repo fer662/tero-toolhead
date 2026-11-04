@@ -1,0 +1,25 @@
+{
+  "mesh": {
+    "background_mm": 1.6,
+    "wall_mm": 0.4,
+    "inlet_mm": 0.2,
+    "near_wall_mm": 0.2,
+    "near_wall_distance_mm": 0.8,
+    "max_cells": 8000000
+  },
+  "air": {
+    "density_kg_m3": 1.2,
+    "nu_m2_s": 0.000015,
+    "turbulence_intensity": 0.05,
+    "mixing_length_mm": 1.1
+  },
+  "view": {
+    "nozzle_tip_mm": [0, -3, 0]
+  },
+  "solver": {
+    "iterations": 1800,
+    "write_interval": 100,
+    "residual": 0.00001,
+    "initial_flow_m3_h": 32
+  }
+}

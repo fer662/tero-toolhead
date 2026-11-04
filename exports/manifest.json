@@ -1,0 +1,21 @@
+{
+  "source_sha256": "6a1ae82bd826541502ea5174aa215a7fa79c3cc063d47a3b9880eec29f820c49",
+  "scripts_sha256": {
+    "scripts/export_stls.py": "eba7ee54c1cc52dbae92e51f6323806e263d92a93328a1625818509f83a0044d",
+    "scripts/fusion/TeroExport/TeroExport.py": "2f860ae276ecb30376023e9dbe7d7224cce0bbe1e2487532c4d6f1a2fe0bcb97",
+    "scripts/fusion/TeroExport/exporter.py": "affc6732f0ca1e3bf2830814256f4e165e98230b9dbf13c0921c2e4e018f0295"
+  },
+  "stls_sha256": {
+    "exports/cfd/large/farfield.stl": "fee440b7cf48179bf368297c7f125146e2d5db8d42837f9d9a8b80540c4a3d00",
+    "exports/cfd/large/inlet.stl": "e6d3cd88d03e42473ea354ee153dae929b5e841378a493109e77ea0f676b2f1f",
+    "exports/cfd/large/walls.stl": "c5f3d9ea196276a9f3dd876770e3a24912898e1d82a9fc1e879c8bc2fc6a7016",
+    "exports/cfd/small/farfield.stl": "c66b421c2208eed5c14a81e4fb8d9adf8958da45eb9a0ed066850242ef5014e3",
+    "exports/cfd/small/inlet.stl": "69b341067f82fe2710fc286bcc8e68efe1a2418af509fc6013c8bfeef715bfd1",
+    "exports/cfd/small/walls.stl": "9ad8ada87485d53ac5b1f79dad7a6c2df12b8f24c53588b2c6bdc3714d9d0fed",
+    "exports/stl/clip-left.stl": "f498f81b1d7a60cb4f2b7f0df222d7a4845644ecc7dc20c196594b0589e9d2be",
+    "exports/stl/clip-right.stl": "b675e258e1a0d235f409b20a9e1787b78d9796fd0a5e161a95a58ef18a0be63a",
+    "exports/stl/core.stl": "5fb60275138cec217378386fc30fa2a2d98092935954b35a0956bc026a9db0bf",
+    "exports/stl/duct-large.stl": "23cb7ce1248e595e29a0974a4e9c1d117d6572794d87b534fa9fb4bd51efbd3d",
+    "exports/stl/duct-small.stl": "31fe0c21da338ee745d94ab6a7ec37cd38478e3dbddcb2859bc5cd80315a3b5a"
+  }
+}

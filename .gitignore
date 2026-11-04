@@ -1,0 +1,12 @@
+.DS_Store
+.vscode/
+__pycache__/
+*.py[cod]
+.venv/
+.build/
+results/
+config/*.local.json
+.env
+.env.*
+!.env.example
+*.log

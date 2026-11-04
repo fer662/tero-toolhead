@@ -1,0 +1,40 @@
+{
+  "name": "ws9290",
+  "description": "Nominal full-speed WM9290-24V curve, read from https://monolith-gantry-updates.zen3d.eu/img/cpap-image-3.webp",
+  "inlet_model": {
+    "curve_points_m3_h_pa": [
+      [
+        0,
+        12600
+      ],
+      [
+        6,
+        11700
+      ],
+      [
+        12,
+        10600
+      ],
+      [
+        18,
+        9200
+      ],
+      [
+        24,
+        7500
+      ],
+      [
+        30,
+        5000
+      ],
+      [
+        36,
+        2500
+      ],
+      [
+        41,
+        0
+      ]
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "addin",
+  "id": "79bf9795-3867-4383-bbd7-2fe658ea4ffd",
+  "author": "Tero",
+  "description": {
+    "": "Export manufacturing and CFD STLs from the repository F3D. No cloud writes."
+  },
+  "version": "1.0.0",
+  "runOnStartup": false,
+  "supportedOS": "windows|mac"
+}

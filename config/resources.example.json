@@ -1,0 +1,6 @@
+{
+  "cpus": 4,
+  "memory_gb": 10,
+  "mesh_timeout_seconds": 3600,
+  "solve_timeout_seconds": 14400
+}
