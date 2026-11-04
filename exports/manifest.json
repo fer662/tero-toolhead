@@ -1,5 +1,5 @@
 {
-  "source_sha256": "6a1ae82bd826541502ea5174aa215a7fa79c3cc063d47a3b9880eec29f820c49",
+  "source_sha256": "9cab0031795c2b9007b9401c81aef8aad52e17aad4d48e2b618f5e7f8ccdeff3",
   "scripts_sha256": {
     "scripts/export_stls.py": "eba7ee54c1cc52dbae92e51f6323806e263d92a93328a1625818509f83a0044d",
     "scripts/fusion/TeroExport/TeroExport.py": "2f860ae276ecb30376023e9dbe7d7224cce0bbe1e2487532c4d6f1a2fe0bcb97",
@@ -13,8 +13,8 @@
     "exports/cfd/small/inlet.stl": "69b341067f82fe2710fc286bcc8e68efe1a2418af509fc6013c8bfeef715bfd1",
     "exports/cfd/small/walls.stl": "9ad8ada87485d53ac5b1f79dad7a6c2df12b8f24c53588b2c6bdc3714d9d0fed",
     "exports/stl/clip-left.stl": "f498f81b1d7a60cb4f2b7f0df222d7a4845644ecc7dc20c196594b0589e9d2be",
-    "exports/stl/clip-right.stl": "b675e258e1a0d235f409b20a9e1787b78d9796fd0a5e161a95a58ef18a0be63a",
-    "exports/stl/core.stl": "5fb60275138cec217378386fc30fa2a2d98092935954b35a0956bc026a9db0bf",
+    "exports/stl/clip-right.stl": "09da72b4ae434c935204d5cea48ef716eb382765a792bece89e46a54c64ad88d",
+    "exports/stl/core.stl": "82a52af87e275aaa0e83159ac2732b511bdc9fed9eda005fc9edcc00c180a898",
     "exports/stl/duct-large.stl": "23cb7ce1248e595e29a0974a4e9c1d117d6572794d87b534fa9fb4bd51efbd3d",
     "exports/stl/duct-small.stl": "31fe0c21da338ee745d94ab6a7ec37cd38478e3dbddcb2859bc5cd80315a3b5a"
   }
