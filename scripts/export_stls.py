@@ -51,7 +51,7 @@ def finish(job):
     output = Path(request['output'])
     paths = list(output.rglob('*.stl'))
     required = {f'cfd/{v}/{b}.stl' for v in ('large','small') for b in ('walls','inlet','farfield')}
-    required |= {f'stl/{p}.stl' for p in ('core','clip-left','clip-right','duct-large','duct-small')}
+    required |= {f'stl/{p}.stl' for p in ('core','clips-both','duct-large','duct-small')}
     if {p.relative_to(output).as_posix() for p in paths} != required:
         raise RuntimeError('Incomplete STL export set')
     manifest = {'source_sha256': request['source_sha256'], 'scripts_sha256': request['scripts_sha256'],

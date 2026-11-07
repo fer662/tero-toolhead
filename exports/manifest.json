@@ -1,21 +1,20 @@
 {
-  "source_sha256": "19a2db6772a88cdd579d5a944b060345806d923e3c03dfe0a99bb521cdaa9451",
+  "source_sha256": "9317023cd7784cefa7df713e3dfba7e0b82cf03bfa1638f6acc316104f478855",
   "scripts_sha256": {
-    "scripts/export_stls.py": "eba7ee54c1cc52dbae92e51f6323806e263d92a93328a1625818509f83a0044d",
+    "scripts/export_stls.py": "4e571884d1131a114960f6b6eb2dffcd05208e3a9f403147f67695bae1b44ecd",
     "scripts/fusion/TeroExport/TeroExport.py": "2f860ae276ecb30376023e9dbe7d7224cce0bbe1e2487532c4d6f1a2fe0bcb97",
-    "scripts/fusion/TeroExport/exporter.py": "affc6732f0ca1e3bf2830814256f4e165e98230b9dbf13c0921c2e4e018f0295"
+    "scripts/fusion/TeroExport/exporter.py": "16395254a9fb7df9685e2bebc7bae03f1eaddbd9a3030b851b3cc4d9610d5616"
   },
   "stls_sha256": {
-    "exports/cfd/large/farfield.stl": "fee440b7cf48179bf368297c7f125146e2d5db8d42837f9d9a8b80540c4a3d00",
-    "exports/cfd/large/inlet.stl": "e6d3cd88d03e42473ea354ee153dae929b5e841378a493109e77ea0f676b2f1f",
-    "exports/cfd/large/walls.stl": "664183c9ff8709c3d6f975d7fddc985834f552d64681e03cd19a5f82dd19f0b6",
-    "exports/cfd/small/farfield.stl": "c66b421c2208eed5c14a81e4fb8d9adf8958da45eb9a0ed066850242ef5014e3",
-    "exports/cfd/small/inlet.stl": "69b341067f82fe2710fc286bcc8e68efe1a2418af509fc6013c8bfeef715bfd1",
-    "exports/cfd/small/walls.stl": "b437a52c24114a525ecb18228d89ecbca7adda9ccaaf173163bacc4d2af82b34",
-    "exports/stl/clip-left.stl": "f498f81b1d7a60cb4f2b7f0df222d7a4845644ecc7dc20c196594b0589e9d2be",
-    "exports/stl/clip-right.stl": "09da72b4ae434c935204d5cea48ef716eb382765a792bece89e46a54c64ad88d",
-    "exports/stl/core.stl": "54198a028538224cc3c36bf6cf9ea2d340042f41b9ff76f588488a066c2ed35d",
-    "exports/stl/duct-large.stl": "a323189ba3e149fc62418f0dbc4b213a80212774819cf0c606453d5cbd7e49b5",
-    "exports/stl/duct-small.stl": "e0ff82668bda514f0ca201da9b9360af60634c4fb8d2a86eabd6f39425b1f102"
+    "exports/cfd/large/farfield.stl": "5326f385985c51f01d2a147ae2af5322a48298570e092ec11d8893acd96eff2e",
+    "exports/cfd/large/inlet.stl": "5e9cdbc80e765c2b2d293f9f286b8c6bf58b0781f38eb2099af7e410f8888810",
+    "exports/cfd/large/walls.stl": "e80d026d42a797d1a2d240ae742d45fb209357f02bf84b7ad2d026b01009ba14",
+    "exports/cfd/small/farfield.stl": "73783785fe7b8b65d1b3fd5aab0dc0c44cb0dd3eb608cb7d7b2411dbd73fe658",
+    "exports/cfd/small/inlet.stl": "2b91d99f39c222798f53940b521fa99c2f40944407cfc4e3c6f5f177097e5aad",
+    "exports/cfd/small/walls.stl": "cdebdd6ffac4d61b79018be78ff72973b35faf1460f7eb63297fc464e70b19f9",
+    "exports/stl/clips-both.stl": "7ad1b325e7b148af83bf1c0fc02c471810545e3a9e798ded871edb6dacabe04d",
+    "exports/stl/core.stl": "128142ae1dd890d2d7c44507ddc8ef1dfd26b79e3f3eca46932ad75f9d77634f",
+    "exports/stl/duct-large.stl": "9c1bed0392fe6d244b6ef07bfbdfb41e9ee17a379d7026e16205b719e7c884cc",
+    "exports/stl/duct-small.stl": "fa8eb3e805bf6b9fb95161fb277a8f6ef10af6050869f4773954b58862da5986"
   }
 }

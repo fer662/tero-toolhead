@@ -11,7 +11,7 @@ Fusion CAD, its STL exports, and a small OpenFOAM CFD runner.
 | Folder | Contents |
 | --- | --- |
 | `cad/` | Native Fusion source, `toolhead.f3d`. |
-| `exports/stl/` | Individual aluminum STLs, with sacrificial material meant to be milled away enabled and 2.4 mm threaded pilots. |
+| `exports/stl/` | Manufacturing STLs, including both clips together in `clips-both.stl`, with sacrificial material enabled and 2.4 mm threaded pilots. |
 | `exports/cfd/` | Finished CFD boundary STLs for each duct variant. |
 | `scripts/` | STL export command, Fusion add-in and CFD command. |
 | `cfd/` | One container, mesh/solver settings, heatmap renderer, optional viewer and OpenFOAM dictionaries. |
@@ -39,19 +39,24 @@ python3 scripts/export_stls.py --check
 
 The command opens a frozen copy of the **repository file**, exports the complete
 STL set and closes the temporary document. It does not use or save a cloud design.
-STL tessellation uses Fusion's default Save as Mesh settings.
+STL tessellation uses Fusion's default Save as Mesh settings. The complete set
+contains four manufacturing files and six CFD boundary files. Both clips retain
+their installed positions in `clips-both.stl`.
 Use `--pilot-diameter 2.4` to change the manufacturing pilot diameter.
 
 The native CAD's `CFD/common` and duct variant own simulation membership.
 The exporter subtracts their `solids` from `domain/domain` and separates the
 resulting triangles into walls, the CAD's `reference/inlet`, and the surrounding
-farfield. There are no Python repairs or per-part simulation adaptations.
-Manufacturing selectors live together at the top of `exporter.py`.
+farfield. Simulation simplifications remain in CAD. For rebuilt designs, the
+exporter also prepares temporary duct/CFD geometry for tessellation, closes only
+bounded mesh seams within 0.001 mm, and rejects unresolved mesh defects. Native
+CAD remains unchanged. Manufacturing parts and stock controls use explicit CAD
+role attributes, with legacy name selectors retained in `exporter.py`.
 
 `exports/manifest.json` contains only source, script and STL hashes for the
-synchronization check. There is no export record, STEP translation or measurement
-receipt. To check staged files, use `--check --staged`; optionally enable the
-included hook with `git config core.hooksPath .githooks`.
+synchronization check; detailed mesh checks remain in the export job. There is
+no STEP translation. To check staged files, use `--check --staged`; optionally
+enable the included hook with `git config core.hooksPath .githooks`.
 
 ## Run CFD
 

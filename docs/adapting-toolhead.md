@@ -107,18 +107,30 @@ the Python runner neither knows nor recreates them. Closed bores remove those
 air paths, and shell offsets change the space available to the air.
 
 The included exporter is still coupled to Tero's `large`/`small` variants, five
-manufacturing part selectors, four final sacrificial-material features and
-`m3_threaded_diameter` parameter. These are in
-`scripts/fusion/TeroExport/exporter.py`. It suppresses sacrificial material for
-CFD, then enables it and sets the pilots for manufacturing STLs. Adapt that
-exporter if reusing it for another design; none of these manufacturing names are
-required when using `run_cfd.py --stls` with boundary files from elsewhere.
+manufacturing part roles, four sacrificial-material controls and the
+`m3_threaded_diameter` parameter. Rebuilt CAD identifies parts and controls with
+`toolhead.export` attributes; legacy designs use the names in
+`scripts/fusion/TeroExport/exporter.py`. Stock controls do not need to occupy the
+last four timeline positions. The exporter suppresses stock for CFD, then enables
+it and sets the pilots for manufacturing STLs. Both clip roles are packaged in
+`clips-both.stl` at their installed positions, producing four manufacturing files.
+Adapt these roles when reusing the exporter for another design; they are not
+required by `run_cfd.py --stls` with boundary files from elsewhere.
+
+For rebuilt designs tagged with export schema `1`, duct and CFD exports use
+periodic-surface conversion and face subdivision in disposable staging geometry,
+then Fusion's default tessellation. Mesh processing may weld boundary vertices
+within 0.001 mm and close only triangular slivers with altitude at most 0.001 mm,
+longest edge at most 1 mm and area at most 0.001 mm². Unresolved defects abort
+export, as do failures of the mesh-volume or bounding-box checks. This export-only
+processing does not modify the source CAD or create simulation simplifications.
 
 `export_stls.py` opens the **repository** `cad/toolhead.f3d` in a disposable
 document, not the current cloud document. Save/update that archive deliberately
 and run the export command after changing CAD. `exports/manifest.json` only
 checks native-source/export-script/STL synchronization; CFD does not read it.
-There is no STEP translation, source-volume receipt or per-part Python repair.
+There is no STEP translation. Export jobs record mesh checks separately from the
+synchronization manifest; the CFD runner does not repair input parts.
 
 ## Blower and physical assumptions
 
