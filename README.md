@@ -11,7 +11,7 @@ Fusion CAD, its STL exports, and a small OpenFOAM CFD runner.
 | Folder | Contents |
 | --- | --- |
 | `cad/` | Native Fusion source, `toolhead.f3d`. |
-| `exports/stl/` | Manufacturing STLs, including both clips together in `clips-both.stl`, with sacrificial material enabled and 2.4 mm threaded pilots. |
+| `exports/stl/` | Shared ducts, plus `monolith/` and `voron/` core and clip sets. Manufacturing stock is enabled; threaded pilots are 2.4 mm. |
 | `exports/cfd/` | Finished CFD boundary STLs for each duct variant. |
 | `scripts/` | STL export command, Fusion add-in and CFD command. |
 | `cfd/` | One container, mesh/solver settings, heatmap renderer, optional viewer and OpenFOAM dictionaries. |
@@ -40,8 +40,23 @@ python3 scripts/export_stls.py --check
 The command opens a frozen copy of the **repository file**, exports the complete
 STL set and closes the temporary document. It does not use or save a cloud design.
 STL tessellation uses Fusion's default Save as Mesh settings. The complete set
-contains four manufacturing files and six CFD boundary files. Both clips retain
-their installed positions in `clips-both.stl`.
+contains six manufacturing files and six CFD boundary files:
+
+```text
+exports/stl/
+├── duct-large.stl
+├── duct-small.stl
+├── monolith/
+│   ├── core.stl
+│   └── clips-both.stl
+└── voron/
+    ├── core.stl
+    └── clips-both.stl
+```
+
+Each `clips-both.stl` contains that variant’s two clips at their installed
+positions. The Voron set is a prototype with front and rear core teeth and flat
+clips; physical belt fit and retention still need testing.
 Use `--pilot-diameter 2.4` to change the manufacturing pilot diameter.
 
 The native CAD's `CFD/common` and duct variant own simulation membership.
@@ -51,7 +66,13 @@ farfield. Simulation simplifications remain in CAD. For rebuilt designs, the
 exporter also prepares temporary duct/CFD geometry for tessellation, closes only
 bounded mesh seams within 0.001 mm, and rejects unresolved mesh defects. Native
 CAD remains unchanged. Manufacturing parts and stock controls use explicit CAD
-role attributes, with legacy name selectors retained in `exporter.py`.
+role and variant attributes. Both tagged core/clip variants and all six stock
+controls must be present; an older archive is rejected rather than exporting
+one variant under both names. The shared ducts are exported only once.
+
+The CFD boundary files still describe the existing CAD-owned simulation
+assembly. Adding the Voron manufacturing set does not create a Voron CFD
+assembly or validate its airflow.
 
 `exports/manifest.json` contains only source, script and STL hashes for the
 synchronization check; detailed mesh checks remain in the export job. There is

@@ -106,16 +106,28 @@ CFD-only shell/shield adjustments. Review such choices for another toolhead;
 the Python runner neither knows nor recreates them. Closed bores remove those
 air paths, and shell offsets change the space available to the air.
 
-The included exporter is still coupled to Tero's `large`/`small` variants, five
-manufacturing part roles, four sacrificial-material controls and the
-`m3_threaded_diameter` parameter. Rebuilt CAD identifies parts and controls with
-`toolhead.export` attributes; legacy designs use the names in
-`scripts/fusion/TeroExport/exporter.py`. Stock controls do not need to occupy the
-last four timeline positions. The exporter suppresses stock for CFD, then enables
-it and sets the pilots for manufacturing STLs. Both clip roles are packaged in
-`clips-both.stl` at their installed positions, producing four manufacturing files.
-Adapt these roles when reusing the exporter for another design; they are not
-required by `run_cfd.py --stls` with boundary files from elsewhere.
+The included exporter is coupled to Tero's `large`/`small` duct variants,
+`monolith`/`voron` core and clip variants, and `m3_threaded_diameter` parameter.
+The `toolhead.export` attributes identify manufacturing components (`kind`),
+bodies (`part`), clip occurrences (`part` = `clip-left` or `clip-right`), and
+components' `variant` (`monolith`, `voron`, or `shared`). Core bodies use `core`;
+shared clip bodies use `clip`; shared ducts use `duct-large` and `duct-small`.
+Older unqualified original-part tags default to `monolith`, with ducts defaulting
+to `shared`; missing Voron roles still abort the complete export.
+
+Each core has `chube` and `mgn12` stock roles, qualified by a feature `variant`
+attribute. Shared ducts use `beacon-large` and `beacon-small` stock roles with
+`variant=shared`. All six controls must be unique and present. Their timeline
+positions do not matter. Stock is suppressed for CFD, then enabled for
+manufacturing; the pilot parameter applies to both core variants.
+
+The exporter writes each core and installed clip pair under
+`exports/stl/{monolith,voron}/`, while both ducts stay directly in `exports/stl/`.
+This produces six manufacturing files. The existing CFD assembly remains
+separate and is not automatically switched to the Voron core/clips. Adapt the
+roles and CAD-owned CFD membership when reusing the exporter for another design;
+none of these role tags are required by `run_cfd.py --stls` with external boundary
+files.
 
 For rebuilt designs tagged with export schema `1`, duct and CFD exports use
 periodic-surface conversion and face subdivision in disposable staging geometry,

@@ -14,13 +14,12 @@ ALUMINUM = {
     'duct-large': ('98 Organic duct', 'Duct - generated organic path'),
     'duct-small': ('99 ALTERNATIVE DUCT', 'Duct - 16.4 inlet - 16.7 lip - 13.9 bore'),
 }
-STOCKS = [
-    'MILLING STOCK - SMALL DUCT Beacon 0.5 mm - suppress for PLA',
-    'MILLING STOCK - CHUBE 0.5 mm - suppress for PLA',
-    'MILLING STOCK - MGN12 0.5 mm - suppress for PLA',
-    'MILLING STOCK - Beacon 0.5 mm - suppress for PLA',
-]
-STOCK_ROLES = {'chube', 'mgn12', 'beacon-large', 'beacon-small'}
+VARIANTS = ('monolith', 'voron')
+VARIANT_PARTS = ('core', 'clip-left', 'clip-right')
+SHARED_PARTS = ('duct-large', 'duct-small')
+PART_ROLES = {*SHARED_PARTS, *(variant+'/'+part for variant in VARIANTS for part in VARIANT_PARTS)}
+STOCK_ROLES = {('shared', 'beacon-large'), ('shared', 'beacon-small'),
+               *((variant, role) for variant in VARIANTS for role in ('chube', 'mgn12'))}
 
 
 def attribute(entity, name):
@@ -33,17 +32,22 @@ def attribute(entity, name):
 
 
 def resolve_stocks(design):
-    """Prefer explicit CAD identities; retain support for published legacy CAD."""
-    tagged = [(attribute(f, 'stock'), f) for c in design.allComponents
-              for f in c.features if attribute(f, 'stock')]
-    if tagged:
-        if len(tagged) != 4 or {role for role, _ in tagged} != STOCK_ROLES:
-            raise RuntimeError('Expected one stock feature for each of the four CAD roles')
-        return [feature for _, feature in sorted(tagged, key=lambda item: item[0])]
-    features = [f for c in design.allComponents for f in c.features if f.name in STOCKS]
-    if len(features) != 4 or {f.name for f in features} != set(STOCKS):
-        raise RuntimeError('Expected four unambiguous sacrificial-material features')
-    return features
+    """Resolve each core's stock independently from the shared duct stock."""
+    stocks = {}
+    for component in design.allComponents:
+        for feature in component.features:
+            role = attribute(feature, 'stock')
+            if not role:
+                continue
+            variant = attribute(feature, 'variant') or ('shared' if role.startswith('beacon-') else 'monolith')
+            key = (variant, role)
+            if key not in STOCK_ROLES or key in stocks:
+                raise RuntimeError('Duplicate or unknown stock role: '+str(key))
+            stocks[key] = feature
+    if set(stocks) != STOCK_ROLES:
+        raise RuntimeError('Missing stock roles: '+str(sorted(STOCK_ROLES-set(stocks)))+
+                           '; update cad/toolhead.f3d with both tagged core variants')
+    return [stocks[key] for key in sorted(stocks)]
 
 
 def resolve_parts(occurrences):
@@ -59,10 +63,19 @@ def resolve_parts(occurrences):
                 if role not in ('clip-left', 'clip-right'):
                     raise RuntimeError('Shared clip requires an explicit occurrence export role')
             if role:
-                tagged.append((role, body))
+                variant = attribute(occurrence.component, 'variant') or ('shared' if role in SHARED_PARTS else 'monolith')
+                if role in SHARED_PARTS:
+                    if variant != 'shared':
+                        raise RuntimeError('Duct manufacturing roles must be shared')
+                    key = role
+                elif role in VARIANT_PARTS and variant in VARIANTS:
+                    key = variant+'/'+role
+                else:
+                    raise RuntimeError('Unknown manufacturing variant/role: '+variant+'/'+role)
+                tagged.append((key, body))
     if tagged:
         for role, body in tagged:
-            if role in parts or role not in ALUMINUM:
+            if role in parts or role not in PART_ROLES:
                 raise RuntimeError('Duplicate or unknown manufacturing role: '+role)
             parts[role] = body
     else:
@@ -71,9 +84,10 @@ def resolve_parts(occurrences):
                        for b in o.bRepBodies if b.name == name]
             if len(matches) != 1:
                 raise RuntimeError('Expected one manufacturing body: '+role)
-            parts[role] = matches[0]
-    if set(parts) != set(ALUMINUM):
-        raise RuntimeError('Missing manufacturing roles: '+str(set(ALUMINUM)-set(parts)))
+            parts[role if role in SHARED_PARTS else 'monolith/'+role] = matches[0]
+    if set(parts) != PART_ROLES:
+        raise RuntimeError('Missing manufacturing roles: '+str(sorted(PART_ROLES-set(parts)))+
+                           '; update cad/toolhead.f3d with both tagged variants')
     return parts
 
 
@@ -239,6 +253,7 @@ def export_job(request_file):
         root = design.rootComponent
         occurrences = list(root.allOccurrences)
         tm = af.TemporaryBRepManager.get()
+        resolve_parts(occurrences)  # Reject incomplete archives before doing CFD work.
         stocks = resolve_stocks(design)
         improved_meshes = attribute(root, "schema") == "1"
         mesh_checks = {}
@@ -388,13 +403,14 @@ def export_job(request_file):
             raise RuntimeError('Threaded-pilot diameter did not evaluate')
         for role, body in resolve_parts(occurrences).items():
             stl(body, output / 'stl' / (role+'.stl'))
-        clips = [output/'stl'/(role+'.stl') for role in ('clip-left','clip-right')]
-        combined = output/'stl/clips-both.stl'
-        combine_stls(clips, combined)
-        mesh_checks['stl/clips-both.stl'] = validate_mesh(combined)
-        for clip in clips:
-            clip.unlink()
-            mesh_checks.pop(clip.relative_to(output).as_posix(), None)
+        for variant in VARIANTS:
+            clips = [output/'stl'/variant/(role+'.stl') for role in ('clip-left','clip-right')]
+            combined = output/'stl'/variant/'clips-both.stl'
+            combine_stls(clips, combined)
+            mesh_checks[combined.relative_to(output).as_posix()] = validate_mesh(combined)
+            for clip in clips:
+                clip.unlink()
+                mesh_checks.pop(clip.relative_to(output).as_posix(), None)
         if sha(request['source']) != request['source_sha256']:
             raise RuntimeError('Input archive changed during export')
         result = {'success': True, 'job_id': request['job_id'], 'mesh_checks': mesh_checks}

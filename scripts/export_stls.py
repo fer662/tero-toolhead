@@ -13,6 +13,12 @@ import uuid
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def required_stls():
+    return ({f'cfd/{v}/{b}.stl' for v in ('large', 'small') for b in ('walls', 'inlet', 'farfield')}
+            | {f'stl/{v}/{p}.stl' for v in ('monolith', 'voron') for p in ('core', 'clips-both')}
+            | {'stl/duct-large.stl', 'stl/duct-small.stl'})
+
+
 def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
@@ -29,6 +35,16 @@ def check(staged=False):
     else:
         contents = lambda name: (ROOT/name).read_bytes()
     manifest = json.loads(contents('exports/manifest.json'))
+    required = {'exports/'+name for name in required_stls()}
+    if set(manifest['stls_sha256']) != required:
+        raise ValueError('Incomplete or obsolete STL layout; run scripts/export_stls.py')
+    if staged:
+        tracked = subprocess.check_output(['git', 'ls-files', '--cached', 'exports'], cwd=ROOT, text=True)
+        actual_paths = {name for name in tracked.splitlines() if name.endswith('.stl')}
+    else:
+        actual_paths = {p.relative_to(ROOT).as_posix() for p in (ROOT/'exports').rglob('*.stl')}
+    if actual_paths != required:
+        raise ValueError('Unexpected or missing STL files; run scripts/export_stls.py')
     for name, expected in {'cad/toolhead.f3d': manifest['source_sha256'], **manifest['scripts_sha256'], **manifest['stls_sha256']}.items():
         data = contents(name)
         # Git stores an LFS pointer; its oid is the SHA-256 of the native archive.
@@ -50,8 +66,7 @@ def finish(job):
         raise RuntimeError('Fusion file or export scripts changed during export')
     output = Path(request['output'])
     paths = list(output.rglob('*.stl'))
-    required = {f'cfd/{v}/{b}.stl' for v in ('large','small') for b in ('walls','inlet','farfield')}
-    required |= {f'stl/{p}.stl' for p in ('core','clips-both','duct-large','duct-small')}
+    required = required_stls()
     if {p.relative_to(output).as_posix() for p in paths} != required:
         raise RuntimeError('Incomplete STL export set')
     manifest = {'source_sha256': request['source_sha256'], 'scripts_sha256': request['scripts_sha256'],

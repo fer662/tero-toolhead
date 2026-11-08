@@ -1,20 +1,22 @@
 {
-  "source_sha256": "2cd76a2740e8c84fdd079fea95aad84325439778e0f92ed06b8bc3d4b3151f25",
+  "source_sha256": "c491c56f50596f0554ba91c9b068ff886c6187dbdb79b922260c8a6316227983",
   "scripts_sha256": {
-    "scripts/export_stls.py": "4e571884d1131a114960f6b6eb2dffcd05208e3a9f403147f67695bae1b44ecd",
+    "scripts/export_stls.py": "6b196d11a9246b32f5fff38ea8c30e901ff1fb2a6c7071711ee9b15154c62679",
     "scripts/fusion/TeroExport/TeroExport.py": "2f860ae276ecb30376023e9dbe7d7224cce0bbe1e2487532c4d6f1a2fe0bcb97",
-    "scripts/fusion/TeroExport/exporter.py": "16395254a9fb7df9685e2bebc7bae03f1eaddbd9a3030b851b3cc4d9610d5616"
+    "scripts/fusion/TeroExport/exporter.py": "73d401bb1f0f738b65683aa87c9341c34ab3923f0c9c0133dbbf61334ea55f72"
   },
   "stls_sha256": {
     "exports/cfd/large/farfield.stl": "5326f385985c51f01d2a147ae2af5322a48298570e092ec11d8893acd96eff2e",
     "exports/cfd/large/inlet.stl": "5e9cdbc80e765c2b2d293f9f286b8c6bf58b0781f38eb2099af7e410f8888810",
-    "exports/cfd/large/walls.stl": "f4834910935be1572ac7e41a03b79178fdd2921a7ca5702971b497fc5dcd6725",
+    "exports/cfd/large/walls.stl": "6e251014a4169fa4227a8f2b535f0ef5fe5761c006489710d2a977edb161ec0f",
     "exports/cfd/small/farfield.stl": "73783785fe7b8b65d1b3fd5aab0dc0c44cb0dd3eb608cb7d7b2411dbd73fe658",
     "exports/cfd/small/inlet.stl": "2b91d99f39c222798f53940b521fa99c2f40944407cfc4e3c6f5f177097e5aad",
-    "exports/cfd/small/walls.stl": "8be17b18210a0ac66af08584b39924fe526401da858a5175468542f8a89115d3",
-    "exports/stl/clips-both.stl": "faa00933cd6fb824ceec2ce65631dbb12127d782dc912a59b68f90992a2e11c1",
-    "exports/stl/core.stl": "efb7d75b0091e3bba58397dd591b281642a8638fc7afcc6590442e80e1c0ccbc",
-    "exports/stl/duct-large.stl": "4d6e1e0e81988bcb289f9888d37ebf1c3eda5279168d84b418b33b031e3c49a5",
-    "exports/stl/duct-small.stl": "29ee825587c2fbe7f155654ac795b2d7baf95e7fcf2e921bec7bd9a3e82f3aa5"
+    "exports/cfd/small/walls.stl": "6993e70314cd546ae63de13e63dc076417924efc7e405df79a648606432d2b61",
+    "exports/stl/duct-large.stl": "41300a387c4d77910d3abb0b64f4dacb3111a222c024e8251d583e46694a8137",
+    "exports/stl/duct-small.stl": "2cec570f02d4074f2e4a4067ec9852eeca292bdec506b5f769c5677bf61d39ba",
+    "exports/stl/monolith/clips-both.stl": "39716d678b611308192b9c2a8c234e02eb8656abba2a753f9439678c1b00866f",
+    "exports/stl/monolith/core.stl": "6f45279adca5956318560092a90d87081f0db5071680ed78dc18801a69530516",
+    "exports/stl/voron/clips-both.stl": "4443cfbc4d4fc3d8e64250f9725ad3e25b635cb0bfb4830dcef122eaafd78f42",
+    "exports/stl/voron/core.stl": "3781d2ae0b6b1066345b1cec3c9f5abe8d737f728e0a49850d717616eb37270e"
   }
 }
