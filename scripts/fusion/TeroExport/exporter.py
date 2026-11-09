@@ -111,7 +111,7 @@ def combine_stls(paths, destination):
 
 
 def validate_mesh(path, allow_submicron_seams=False):
-    """Close bounded tessellation seams, with vertex movement limited to one micron."""
+    """Cancel exact opposing facets and close bounded submicron tessellation seams."""
     import collections
     import math
     data = path.read_bytes()
@@ -145,6 +145,24 @@ def validate_mesh(path, allow_submicron_seams=False):
         return edges,volume,bounds
 
     edges,_,_ = inspect(facets)
+    # Fusion can emit coincident triangle pairs with opposite winding. Their
+    # oriented contributions cancel exactly; retain every other facet verbatim.
+    # Do not merge nearby coordinates or accept same-winding duplicates.
+    coincident = collections.defaultdict(list)
+    for index, facet in enumerate(facets):
+        values = struct.unpack('<12fH', facet)
+        points = tuple(tuple(values[i:i+3]) for i in (3,6,9))
+        key = tuple(sorted(points))
+        positive = points in (key, key[1:]+key[:1], key[2:]+key[:2])
+        coincident[key].append((index, positive))
+    cancelled = []
+    for group in coincident.values():
+        if len(group)==2 and group[0][1] != group[1][1]:
+            cancelled.append([group[0][0], group[1][0]])
+    if cancelled:
+        removed = {index for pair in cancelled for index in pair}
+        facets = [facet for index, facet in enumerate(facets) if index not in removed]
+        edges,_,_ = inspect(facets)
     boundary = [values[0] for values in edges.values() if len(values)==1]
     welds = []
     dropped = []
@@ -215,11 +233,11 @@ def validate_mesh(path, allow_submicron_seams=False):
         raise RuntimeError('STL is not a closed consistently oriented manifold')
     if volume<=0:
         raise RuntimeError('STL signed volume is not positive')
-    if repairs or welds:
+    if repairs or welds or cancelled:
         path.write_bytes(data[:80]+struct.pack('<I',len(facets))+b''.join(facets))
     return {'triangles':len(facets),'signed_volume_mm3':volume,'bounds_mm':bounds,
             'closed_oriented_manifold':True,'seam_triangles_added':repairs,'seam_vertex_groups':welds,
-            'collapsed_seam_triangles_removed':dropped}
+            'collapsed_seam_triangles_removed':dropped,'exact_opposite_triangle_pairs_removed':cancelled}
 
 
 def sha(path):
